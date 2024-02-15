@@ -20,7 +20,23 @@ const App = () => {
     webiste: "",
   });
 
-  const handleOnClick = () => {};
+  const fetchUserData = async () => {
+    setIsLoading(LoadingStatus.IN_PROGRESS)
+     const response = await fetch(`https://content.newtonschool.co/v1/pr/main/users/${userId}`)
+     const result = await response.json();
+     setIsLoading(LoadingStatus.SUCCESS)
+     setUserData(result)
+
+
+  };
+
+  const handleOnClick = () => {
+    setIsLoading(LoadingStatus.IN_PROGRESS);
+    setTimeout(() => {
+      fetchUserData()
+    }, 2000);
+  };
+
 
   const onChangeHandler = (event) => {
     setUserId(event.target.value);
@@ -41,14 +57,17 @@ const App = () => {
         Get User
       </button>
 
-      <div id="data">
+
+      
+
+      {(isLoading==="IN_PROGRESS")?(<Loader></Loader>):(<div id="data">
         <h1>Click on the button to get the user</h1>
         <h4 id="id">{userData.id}</h4>
         <h4 id="email">{userData.email}</h4>
         <h4 id="name">{userData.name}</h4>
         <h4 id="phone">{userData.phone}</h4>
         <h4 id="website">{userData.website}</h4>
-      </div>
+      </div>)}
     </div>
   );
 };
